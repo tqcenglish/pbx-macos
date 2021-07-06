@@ -7,9 +7,25 @@ import wallpapers from "../configs/wallpapers";
 import user from "../configs/user";
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      password: ""
+    };
+  }
   keyPress = (e) => {
     const keyCode = e.which || e.keyCode;
-    if (keyCode === 13) this.props.setLogin(true);
+    // if (keyCode === 13) this.props.setLogin(true);
+  };
+
+  handleInputChange = (e) => {
+    if (e.target.value === "") this.setState({ password: "" });
+    this.setState(
+      {
+        password: e.target.value
+      },
+      () => {}
+    );
   };
 
   render() {
@@ -21,7 +37,13 @@ class Login extends Component {
             this.props.dark ? wallpapers.night : wallpapers.day
           }) center/cover no-repeat`
         }}
-        onClick={() => this.props.setLogin(true)}
+        onClick={() => {
+          // 检查密码
+          console.log(this.state.password);
+          if (this.state.password === "admin") {
+            this.props.setLogin(true);
+          }
+        }}
       >
         <div className="inline-block w-auto relative top-1/2 -mt-40">
           {/* Avatar */}
@@ -40,7 +62,8 @@ class Login extends Component {
               className="nightwind-prevent text-sm col-start-1 col-span-4 outline-none focus:outline-none bg-transparent px-2 text-white"
               type="password"
               placeholder="Enter Password"
-              onClick={(e) => e.stopPropagation()}
+              value={this.state.password}
+              onChange={(e) => this.handleInputChange(e)}
               onKeyPress={this.keyPress}
             />
             <div className="col-start-5 col-span-1 flex justify-center items-center">
